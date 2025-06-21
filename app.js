@@ -26,6 +26,7 @@ const listInput = document.getElementById('list-input');
 const display = document.getElementById('timer-display');
 const headingEl = document.getElementById('timer-heading');
 const subheadingEl = document.getElementById('timer-subheading');
+const nextInfoEl   = document.getElementById('timer-next');
 
 const startBtn = document.getElementById('start-btn');
 const pauseBtn = document.getElementById('pause-btn');
@@ -41,7 +42,7 @@ let timerId = null;
 function parseTimers() {
   const lines = listInput.value.split('\n').map(l => l.trim()).filter(Boolean);
   return lines.map(line => {
-    const [time, title = '', subtitle = ''] = line.split(';').map(s => s.trim());
+    const [time, title = '', subtitle = '', color = ''] = line.split(';').map(s => s.trim());
     let sec = 0;
     if (time.includes(':')) {
       const [m, s = '0'] = time.split(':');
@@ -49,7 +50,7 @@ function parseTimers() {
     } else {
       sec = parseInt(time, 10);
     }
-    return { duration: sec, title, subtitle };
+    return { duration: sec, title, subtitle, color };
   });
 }
 
@@ -67,13 +68,17 @@ function showCurrentInfo() {
   const t = timers[currentIndex] || {};
   headingEl.textContent = t.title || '';
   subheadingEl.textContent = t.subtitle || '';
-  prevBtn.disabled = currentIndex === 0;
-  nextBtn.disabled = currentIndex >= timers.length - 1;
+  prevBtn.classList.toggle('disabled', currentIndex === 0);
+  nextBtn.classList.toggle('disabled', currentIndex >= timers.length - 1);
+
+  const nxt = timers[currentIndex + 1];
+  nextInfoEl.textContent = nxt ? `Next: ${format(nxt.duration)} ${nxt.title}` : '';
 }
 
 function loadTimer(index) {
   currentIndex = index;
   remaining = timers[currentIndex].duration;
+  document.body.style.backgroundColor = timers[currentIndex].color || '';
   render();
   showCurrentInfo();
 }
@@ -98,8 +103,8 @@ function start() {
   if (timerId === null) {
     if (remaining === 0) loadTimer(currentIndex);
     timerId = setInterval(tick, 1000);
-    startBtn.disabled = true;
-    pauseBtn.disabled = false;
+    startBtn.classList.add('disabled');
+    pauseBtn.classList.remove('disabled');
   }
 }
 
@@ -107,8 +112,8 @@ function pause() {
   if (timerId !== null) {
     clearInterval(timerId);
     timerId = null;
-    startBtn.disabled = false;
-    pauseBtn.disabled = true;
+    startBtn.classList.remove('disabled');
+    pauseBtn.classList.add('disabled');
   }
 }
 
