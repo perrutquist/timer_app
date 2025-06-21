@@ -17,7 +17,7 @@ function setMode(mode){
         listBtn.classList.remove('active');
     }
 }
-listBtn .addEventListener('click',()=>setMode('list'));
+listBtn.addEventListener('click', () => setMode('list'));
 timerBtn.addEventListener('click',()=>setMode('timer'));
 
 /* simple 1-minute countdown */
@@ -66,9 +66,9 @@ function reset(){
     render();
 }
 
-startBtn .addEventListener('click',start);
-pauseBtn .addEventListener('click',pause);
-resetBtn .addEventListener('click',reset);
+startBtn.addEventListener('click', start);
+pauseBtn.addEventListener('click', pause);
+resetBtn.addEventListener('click', reset);
 render();
 
 /* service-worker registration for offline use */
