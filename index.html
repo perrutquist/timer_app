@@ -16,21 +16,34 @@
 </head>
 <body>
 <header>
-    <button id="btn-list" class="active">List</button>
-    <button id="btn-timer">Timer</button>
+    <button id="btn-list" class="active" title="List">📋</button>
+    <button id="btn-timer" title="Timer">⏱️</button>
 </header>
 
 <main>
     <section id="list-mode">
-        <textarea id="list-input" placeholder="Enter one item per line…"></textarea>
+        <textarea id="list-input" placeholder="time;heading;subheading">
+00:20;Work;Round 1
+00:10;Rest;Round 1
+00:20;Work;Round 2
+00:10;Rest;Round 2
+00:20;Work;Round 3
+00:10;Rest;Round 3
+00:20;Work;Round 4
+00:10;Rest;Round 4
+        </textarea>
     </section>
 
     <section id="timer-mode" class="hidden">
         <div id="timer-display">01:00</div>
+        <div id="timer-heading"></div>
+        <div id="timer-subheading" class="sub"></div>
         <div class="controls">
-            <button id="start-btn">Start</button>
-            <button id="pause-btn" disabled>Pause</button>
-            <button id="reset-btn">Reset</button>
+            <button id="prev-btn" disabled>⏮️</button>
+            <button id="start-btn">▶️</button>
+            <button id="pause-btn" disabled>⏸️</button>
+            <button id="reset-btn">🔄</button>
+            <button id="next-btn" disabled>⏭️</button>
         </div>
     </section>
 </main>

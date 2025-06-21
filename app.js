@@ -1,77 +1,148 @@
 /* mode switching */
-const listBtn   = document.getElementById('btn-list');
-const timerBtn  = document.getElementById('btn-timer');
-const listSec   = document.getElementById('list-mode');
-const timerSec  = document.getElementById('timer-mode');
+const listBtn = document.getElementById('btn-list');
+const timerBtn = document.getElementById('btn-timer');
+const listSec = document.getElementById('list-mode');
+const timerSec = document.getElementById('timer-mode');
 
-function setMode(mode){
-    if(mode==='list'){
-        listSec.classList.remove('hidden');
-        timerSec.classList.add('hidden');
-        listBtn.classList.add('active');
-        timerBtn.classList.remove('active');
-    }else{
-        timerSec.classList.remove('hidden');
-        listSec.classList.add('hidden');
-        timerBtn.classList.add('active');
-        listBtn.classList.remove('active');
-    }
+function setMode(mode) {
+  if (mode === 'list') {
+    listSec.classList.remove('hidden');
+    timerSec.classList.add('hidden');
+    listBtn.classList.add('active');
+    timerBtn.classList.remove('active');
+  } else {
+    timerSec.classList.remove('hidden');
+    listSec.classList.add('hidden');
+    timerBtn.classList.add('active');
+    listBtn.classList.remove('active');
+  }
 }
 listBtn.addEventListener('click', () => setMode('list'));
-timerBtn.addEventListener('click',()=>setMode('timer'));
+timerBtn.addEventListener('click', () => setMode('timer'));
 
-/* simple 1-minute countdown */
-let remaining = 60;          // seconds
-let timerId   = null;
+/* multi–timer logic */
+const listInput = document.getElementById('list-input');
 
-const display   = document.getElementById('timer-display');
-const startBtn  = document.getElementById('start-btn');
-const pauseBtn  = document.getElementById('pause-btn');
-const resetBtn  = document.getElementById('reset-btn');
+const display = document.getElementById('timer-display');
+const headingEl = document.getElementById('timer-heading');
+const subheadingEl = document.getElementById('timer-subheading');
 
-function render(){
-    const m = String(Math.floor(remaining/60)).padStart(2,'0');
-    const s = String(remaining%60).padStart(2,'0');
-    display.textContent = `${m}:${s}`;
-}
+const startBtn = document.getElementById('start-btn');
+const pauseBtn = document.getElementById('pause-btn');
+const resetBtn = document.getElementById('reset-btn');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
 
-function tick(){
-    if(remaining>0){
-        remaining--;
-        render();
-        if(remaining===0) pause(); // auto-stop
+let timers = [];
+let currentIndex = 0;
+let remaining = 0;
+let timerId = null;
+
+function parseTimers() {
+  const lines = listInput.value.split('\n').map(l => l.trim()).filter(Boolean);
+  return lines.map(line => {
+    const [time, title = '', subtitle = ''] = line.split(';').map(s => s.trim());
+    let sec = 0;
+    if (time.includes(':')) {
+      const [m, s = '0'] = time.split(':');
+      sec = parseInt(m, 10) * 60 + parseInt(s, 10);
+    } else {
+      sec = parseInt(time, 10);
     }
+    return { duration: sec, title, subtitle };
+  });
 }
 
-function start(){
-    if(timerId===null){
-        timerId = setInterval(tick,1000);
-        startBtn.disabled = true;
-        pauseBtn.disabled = false;
-    }
+function format(sec) {
+  const m = String(Math.floor(sec / 60)).padStart(2, '0');
+  const s = String(sec % 60).padStart(2, '0');
+  return `${m}:${s}`;
 }
 
-function pause(){
-    if(timerId!==null){
-        clearInterval(timerId);
-        timerId = null;
-        startBtn.disabled = false;
-        pauseBtn.disabled = true;
-    }
+function render() {
+  display.textContent = format(remaining);
 }
 
-function reset(){
-    pause();
-    remaining = 60;
+function showCurrentInfo() {
+  const t = timers[currentIndex] || {};
+  headingEl.textContent = t.title || '';
+  subheadingEl.textContent = t.subtitle || '';
+  prevBtn.disabled = currentIndex === 0;
+  nextBtn.disabled = currentIndex >= timers.length - 1;
+}
+
+function loadTimer(index) {
+  currentIndex = index;
+  remaining = timers[currentIndex].duration;
+  render();
+  showCurrentInfo();
+}
+
+function tick() {
+  if (remaining > 0) {
+    remaining--;
     render();
+    if (remaining === 0) {
+      if (currentIndex < timers.length - 1) {
+        loadTimer(currentIndex + 1);
+      } else {
+        pause(); // finished
+      }
+    }
+  }
+}
+
+function start() {
+  timers = parseTimers();
+  if (timers.length === 0) return;
+  if (timerId === null) {
+    if (remaining === 0) loadTimer(currentIndex);
+    timerId = setInterval(tick, 1000);
+    startBtn.disabled = true;
+    pauseBtn.disabled = false;
+  }
+}
+
+function pause() {
+  if (timerId !== null) {
+    clearInterval(timerId);
+    timerId = null;
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+  }
+}
+
+function reset() {
+  pause();
+  loadTimer(currentIndex);
+}
+
+function next() {
+  if (currentIndex < timers.length - 1) {
+    pause();
+    loadTimer(currentIndex + 1);
+  }
+}
+
+function prev() {
+  if (currentIndex > 0) {
+    pause();
+    loadTimer(currentIndex - 1);
+  }
 }
 
 startBtn.addEventListener('click', start);
 pauseBtn.addEventListener('click', pause);
 resetBtn.addEventListener('click', reset);
-render();
+nextBtn.addEventListener('click', next);
+prevBtn.addEventListener('click', prev);
+
+// initial state
+timers = parseTimers();
+loadTimer(0);
+pause();
 
 /* service-worker registration for offline use */
-if('serviceWorker' in navigator){
-    window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
 }
