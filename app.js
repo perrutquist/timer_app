@@ -1,6 +1,6 @@
 /* mode switching */
-const listBtn = document.getElementById('btn-list');
-const timerBtn = document.getElementById('btn-timer');
+const listBtn  = document.getElementById('list-btn');
+const timerBtn = document.getElementById('timer-btn');
 const listSec = document.getElementById('list-mode');
 const timerSec = document.getElementById('timer-mode');
 
@@ -8,13 +8,9 @@ function setMode(mode) {
   if (mode === 'list') {
     listSec.classList.remove('hidden');
     timerSec.classList.add('hidden');
-    listBtn.classList.add('active');
-    timerBtn.classList.remove('active');
   } else {
     timerSec.classList.remove('hidden');
     listSec.classList.add('hidden');
-    timerBtn.classList.add('active');
-    listBtn.classList.remove('active');
   }
 }
 listBtn.addEventListener('click', () => setMode('list'));
@@ -32,7 +28,9 @@ const startBtn = document.getElementById('start-btn');
 const pauseBtn = document.getElementById('pause-btn');
 const resetBtn = document.getElementById('reset-btn');
 const prevBtn = document.getElementById('prev-btn');
-const nextBtn = document.getElementById('next-btn');
+const nextBtn  = document.getElementById('next-btn');
+const copyBtn  = document.getElementById('copy-btn');
+const pasteBtn = document.getElementById('paste-btn');
 
 let timers = [];
 let currentIndex = 0;
@@ -136,11 +134,32 @@ function prev() {
   }
 }
 
+async function copyList() {
+  try {
+    await navigator.clipboard.writeText(listInput.value);
+  } catch (err) {
+    alert('Failed to copy: ' + err);
+  }
+}
+
+async function pasteList() {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (text) {
+      listInput.value = text;
+    }
+  } catch (err) {
+    alert('Failed to paste: ' + err);
+  }
+}
+
 startBtn.addEventListener('click', start);
 pauseBtn.addEventListener('click', pause);
 resetBtn.addEventListener('click', reset);
 nextBtn.addEventListener('click', next);
 prevBtn.addEventListener('click', prev);
+copyBtn?.addEventListener('click', copyList);
+pasteBtn?.addEventListener('click', pasteList);
 
 // initial state
 timers = parseTimers();

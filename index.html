@@ -15,10 +15,6 @@
     <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-<header>
-    <span id="btn-list" class="tab-icon active" title="List">📋</span>
-    <span id="btn-timer" class="tab-icon" title="Timer">⏱️</span>
-</header>
 
 <main>
     <section id="list-mode">
@@ -32,6 +28,11 @@
 00:20 ; Work ; Round&nbsp;4 ; red
 00:10 ; Rest ; Round&nbsp;4 ; green
         </textarea>
+    <div class="controls">
+        <span id="timer-btn" class="ctrl" title="Timer">⏱️</span>
+        <span id="copy-btn"  class="ctrl" title="Copy list to clipboard">📤</span>
+        <span id="paste-btn" class="ctrl" title="Paste list from clipboard">📥</span>
+    </div>
     </section>
 
     <section id="timer-mode" class="hidden">
@@ -44,6 +45,7 @@
             <span id="pause-btn" class="ctrl disabled" title="Pause">⏸️</span>
             <span id="reset-btn" class="ctrl"          title="Reset">🔄</span>
             <span id="next-btn"  class="ctrl disabled" title="Next">⏭️</span>
+            <span id="list-btn"  class="ctrl"          title="List">📋</span>
         </div>
         <div id="timer-next" class="next-info"></div>
     </section>
