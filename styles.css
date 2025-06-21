@@ -13,3 +13,11 @@ textarea{width:100%;height:60vh;font-size:1rem;padding:.5rem;}
 .controls{display:flex;gap:1rem;justify-content:center;position:fixed;left:0;right:0;bottom:1rem;}
 .controls .ctrl{cursor:pointer;font-size:2rem;padding:.25rem;}
 .controls .disabled{opacity:.4;pointer-events:none;cursor:default;}
+/* vertically center list and timer content */
+#list-mode,
+#timer-mode{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-height:100vh;
+}
