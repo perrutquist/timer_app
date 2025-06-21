@@ -1,6 +1,6 @@
 {
-  "name": "List & Timer",
-  "short_name": "ListTimer",
+  "name": "Timer",
+  "short_name": "Timer",
   "theme_color": "#1976d2",
   "background_color": "#ffffff",
   "display": "standalone",
