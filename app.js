@@ -100,7 +100,10 @@ function playBeeps(count = 1, interval = 250) {
 }        
 
 function parseTimers() {
-  const lines = listInput.value.split('\n').map(l => l.trim()).filter(Boolean);
+  const lines = listInput.value
+    .split('\n')
+    .map(l => l.trim())
+    .filter(l => l && !l.startsWith('#')); // ignore blank lines & comments
   lastListSnapshot = listInput.value; // remember current version
   return lines.map(line => {
     const [time, title = '', subtitle = '', color = '', bellStr = ''] = line.split(';').map(s => s.trim());
