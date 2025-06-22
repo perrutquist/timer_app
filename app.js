@@ -77,6 +77,13 @@ function playBeep(duration = 0.2, frequency = 600, volume = 0.3) {
   osc.stop(audioCtx.currentTime + duration);
 }
 
+/* play multiple beeps (bells) */
+function playBeeps(count = 1, interval = 500) {
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => playBeep(), i * interval);
+  }
+}
+
 function parseTimers() {
   const lines = listInput.value.split('\n').map(l => l.trim()).filter(Boolean);
   lastListSnapshot = listInput.value; // remember current version
