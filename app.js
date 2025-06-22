@@ -14,7 +14,19 @@ function setMode(mode) {
   }
 }
 listBtn.addEventListener('click', () => setMode('list'));
-timerBtn.addEventListener('click', () => setMode('timer'));
+timerBtn.addEventListener('click', () => {
+  // Switch to timer mode and reset based on the latest list content
+  setMode('timer');
+  timers = parseTimers();   // re-parse in case the user edited the list
+  currentIndex = 0;
+  pause();                  // stop any running timer
+  if (timers.length) {
+    loadTimer(0);           // load first timer of the new list
+  } else {
+    remaining = 0;
+    render();
+  }
+});
 
 /* multi–timer logic */
 const listInput = document.getElementById('list-input');
