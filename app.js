@@ -61,28 +61,43 @@ let timerId = null;
 
 /* -------- sound -------- */
 let audioCtx = null;
-function playBeep(duration = 0.2, frequency = 600, volume = 0.3) {
-  // lazily create AudioContext after a user-gesture (start/pause click)
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.type = 'sine';
-  osc.frequency.value = frequency;
-  gain.gain.value = volume;
+function playBeep(duration = 0.5, baseFreq = 440, volume = 0.3) {
+   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();                                                                
+   const now = audioCtx.currentTime;
 
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
+  const partials = [
+    { ratio: 1, gain: 1.0 },     // Fundamental
+    { ratio: 2.0, gain: 0.4 },   // Harmonic
+    { ratio: 2.8, gain: 0.3 },   // Slightly inharmonic
+    { ratio: 3.5, gain: 0.2 },   // Dissonant overtone
+    { ratio: 5.0, gain: 0.1 },   // High overtone
+  ];
 
-  osc.start();
-  osc.stop(audioCtx.currentTime + duration);
+  partials.forEach(partial => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(baseFreq * partial.ratio, now);
+
+    // Exponential decay envelope for bell-like fade
+    gain.gain.setValueAtTime(volume * partial.gain, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(now);
+    osc.stop(now + duration);
+  });
 }
-
-/* play multiple beeps (bells) */
-function playBeeps(count = 1, interval = 500) {
-  for (let i = 0; i < count; i++) {
-    setTimeout(() => playBeep(), i * interval);
-  }
-}
+                                                                                                                                                  
+ /* play multiple beeps (bells) */                                                                                                                    
+function playBeeps(count = 1, interval = 250) {                                                                                                      
+  for (let i = 0; i < count; i++) {                                                                                                                  
+    setTimeout(() => playBeep(), i * interval);                                                                                                      
+  }                                                                                                                                                  
+}        
 
 function parseTimers() {
   const lines = listInput.value.split('\n').map(l => l.trim()).filter(Boolean);
