@@ -60,7 +60,7 @@ it again to pick up the latest version.
 
 ## Contributing
 
-Issues and pull requests are welcome – the whole codebase is under 200 LOC.
+Issues and pull requests are welcome – the whole codebase is under 400 LOC.
 
 ## License
 
