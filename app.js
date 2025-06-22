@@ -81,7 +81,7 @@ function parseTimers() {
   const lines = listInput.value.split('\n').map(l => l.trim()).filter(Boolean);
   lastListSnapshot = listInput.value; // remember current version
   return lines.map(line => {
-    const [time, title = '', subtitle = '', color = ''] = line.split(';').map(s => s.trim());
+    const [time, title = '', subtitle = '', color = '', bellStr = ''] = line.split(';').map(s => s.trim());
     let sec = 0;
     if (time.includes(':')) {
       const [m, s = '0'] = time.split(':');
@@ -89,7 +89,8 @@ function parseTimers() {
     } else {
       sec = parseInt(time, 10);
     }
-    return { duration: sec, title, subtitle, color };
+    const bells = bellStr === '' ? 0 : parseInt(bellStr, 10) || 0;
+    return { duration: sec, title, subtitle, color, bells };
   });
 }
 
@@ -135,7 +136,8 @@ function tick() {
     remaining--;
     render();
     if (remaining === 0) {
-      playBeep();                       // signal end of timer
+      const bellCount = timers[currentIndex].bells || 0;
+      if (bellCount > 0) playBeeps(bellCount); // signal end of timer
       if (currentIndex < timers.length - 1) {
         loadTimer(currentIndex + 1);
       } else {

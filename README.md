@@ -28,10 +28,10 @@ folder to any static host (GitHub Pages, Netlify, Vercel, …).
 Each line describes one timer and is split by **semicolons**:
 
 ```
-duration ; heading ; sub-heading ; color
+duration ; heading ; sub-heading ; color ; bells
 ```
 
-Only `duration` is required:
+Only `duration` is required; the optional `bells` column sets how many bell sounds will play when the timer ends (default `0`):
 
 ```
 00:20 ; Work ; Round 1 ; red
