@@ -10,6 +10,7 @@ textarea{width:100%;height:60vh;font-size:1rem;padding:.5rem;}
 #timer-heading{text-align:center;font-size:2rem;font-weight:bold;margin-bottom:.25rem;}
 #timer-subheading{text-align:center;font-size:1.25rem;margin-bottom:1rem;}
 #timer-next{text-align:center;margin-top:1rem;font-size:1rem;font-style:italic;opacity:.8;}
+#timer-remaining{text-align:center;margin-top:.25rem;font-size:1rem;font-style:italic;opacity:.8;}
 .controls{display:flex;gap:1rem;justify-content:center;position:fixed;left:0;right:0;bottom:1rem;}
 .controls .ctrl{cursor:pointer;font-size:2rem;padding:.25rem;}
 .controls .disabled{opacity:.4;pointer-events:none;cursor:default;}

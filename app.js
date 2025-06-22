@@ -43,6 +43,7 @@ const display = document.getElementById('timer-display');
 const headingEl = document.getElementById('timer-heading');
 const subheadingEl = document.getElementById('timer-subheading');
 const nextInfoEl   = document.getElementById('timer-next');
+const remainingInfoEl = document.getElementById('timer-remaining');
 
 const startBtn = document.getElementById('start-btn');
 const pauseBtn = document.getElementById('pause-btn');
@@ -81,6 +82,14 @@ function format(sec) {
 
 function render() {
   display.textContent = format(remaining);
+
+  // update total remaining time
+  const totalRemaining =
+    remaining +
+    timers.slice(currentIndex + 1).reduce((sum, t) => sum + t.duration, 0);
+
+  remainingInfoEl.textContent =
+    timers.length ? `Remaining: ${format(totalRemaining)}` : '';
 }
 
 function showCurrentInfo() {
