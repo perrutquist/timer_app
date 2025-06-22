@@ -200,6 +200,17 @@ restartBtn.addEventListener('click', restartList);
 copyBtn?.addEventListener('click', copyList);
 pasteBtn?.addEventListener('click', pasteList);
 
+// show install tip only on mobile browsers not already running standalone
+const installTip = document.getElementById('install-tip');
+function shouldShowInstallTip() {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  return !isStandalone && isMobile;
+}
+if (installTip && shouldShowInstallTip()) {
+  installTip.classList.remove('hidden');
+}
+
 // initial state
 timers = parseTimers();
 loadTimer(0);
