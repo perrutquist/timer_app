@@ -50,6 +50,7 @@ const pauseBtn = document.getElementById('pause-btn');
 const resetBtn = document.getElementById('reset-btn');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn  = document.getElementById('next-btn');
+const restartBtn = document.getElementById('restart-btn');
 const copyBtn  = document.getElementById('copy-btn');
 const pasteBtn = document.getElementById('paste-btn');
 
@@ -164,6 +165,13 @@ function prev() {
   }
 }
 
+function restartList() {
+  timers = parseTimers();
+  if (timers.length === 0) return;
+  pause();
+  loadTimer(0);
+}
+
 async function copyList() {
   try {
     await navigator.clipboard.writeText(listInput.value);
@@ -188,6 +196,7 @@ pauseBtn.addEventListener('click', pause);
 resetBtn.addEventListener('click', reset);
 nextBtn.addEventListener('click', next);
 prevBtn.addEventListener('click', prev);
+restartBtn.addEventListener('click', restartList);
 copyBtn?.addEventListener('click', copyList);
 pasteBtn?.addEventListener('click', pasteList);
 
