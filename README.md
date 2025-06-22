@@ -10,8 +10,8 @@ worker.
 
 👉 Try the live version at <https://perrutquist.github.io/timer_app/>.  
 
-To run it locally, simply open `index.html` in any modern browser or deploy the
-folder to any static host (GitHub Pages, Netlify, Vercel, …).
+To run it locally, serve the folder with any static HTTP server (see Development
+section) or deploy it to any static host (GitHub Pages, Netlify, Vercel, …).
 
 ## Features
 
@@ -52,6 +52,11 @@ python3 -m http.server 8000
 ```
 
 Then open <http://localhost:8000> in your browser.
+
+⚠️  Because the service worker caches files aggressively, you might not see
+your changes right away. Perform a hard refresh (Shift-Reload) on desktop
+browsers, or — on mobile devices — remove the app from the home-screen and add
+it again to pick up the latest version.
 
 ## Contributing
 
