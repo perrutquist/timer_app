@@ -8,8 +8,10 @@ worker.
 
 ## Demo
 
-Simply open `index.html` in any modern browser or deploy the folder to a static
-host (GitHub Pages, Netlify, Vercel, …).
+👉 Try the live version at <https://perrutquist.github.io/timer_app/>.  
+
+To run it locally, simply open `index.html` in any modern browser or deploy the
+folder to any static host (GitHub Pages, Netlify, Vercel, …).
 
 ## Features
 
