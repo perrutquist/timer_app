@@ -1,5 +1,5 @@
 *{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif;}
-body,html{height:100%;}
+body,html{height:50%;}
 header{display:flex;background:#1976d2;color:#fff;}
 header .tab-icon{flex:1;text-align:center;padding:.75rem 0;cursor:pointer;font-size:2rem;user-select:none;}
 header .tab-icon.active{background:#145ca3;}
