@@ -59,6 +59,24 @@ let currentIndex = 0;
 let remaining = 0;
 let timerId = null;
 
+/* -------- sound -------- */
+let audioCtx = null;
+function playBeep(duration = 0.2, frequency = 600, volume = 0.3) {
+  // lazily create AudioContext after a user-gesture (start/pause click)
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = frequency;
+  gain.gain.value = volume;
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
 function parseTimers() {
   const lines = listInput.value.split('\n').map(l => l.trim()).filter(Boolean);
   lastListSnapshot = listInput.value; // remember current version
@@ -117,6 +135,7 @@ function tick() {
     remaining--;
     render();
     if (remaining === 0) {
+      playBeep();                       // signal end of timer
       if (currentIndex < timers.length - 1) {
         loadTimer(currentIndex + 1);
       } else {
