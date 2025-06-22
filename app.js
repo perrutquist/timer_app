@@ -15,21 +15,29 @@ function setMode(mode) {
 }
 listBtn.addEventListener('click', () => setMode('list'));
 timerBtn.addEventListener('click', () => {
-  // Switch to timer mode and reset based on the latest list content
+  // Switch to timer mode; reset only if the list content changed
   setMode('timer');
-  timers = parseTimers();   // re-parse in case the user edited the list
-  currentIndex = 0;
-  pause();                  // stop any running timer
-  if (timers.length) {
-    loadTimer(0);           // load first timer of the new list
-  } else {
-    remaining = 0;
-    render();
+
+  if (listModified()) {
+    timers = parseTimers();   // re-parse only when list differs
+    currentIndex = 0;
+    pause();                  // stop any running timer
+    if (timers.length) {
+      loadTimer(0);           // load first timer of the new list
+    } else {
+      remaining = 0;
+      render();
+    }
   }
 });
 
 /* multi–timer logic */
 const listInput = document.getElementById('list-input');
+
+let lastListSnapshot = listInput.value; // track text last time we parsed
+function listModified() {
+  return listInput.value !== lastListSnapshot;
+}
 
 const display = document.getElementById('timer-display');
 const headingEl = document.getElementById('timer-heading');
@@ -51,6 +59,7 @@ let timerId = null;
 
 function parseTimers() {
   const lines = listInput.value.split('\n').map(l => l.trim()).filter(Boolean);
+  lastListSnapshot = listInput.value; // remember current version
   return lines.map(line => {
     const [time, title = '', subtitle = '', color = ''] = line.split(';').map(s => s.trim());
     let sec = 0;
