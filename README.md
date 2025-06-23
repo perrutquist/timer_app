@@ -16,27 +16,39 @@ section) or deploy it to any static host (GitHub Pages, Netlify, Vercel, …).
 ## Generate timers with ChatGPT 🪄
 
 Need a quick set-up or some inspiration?  
-You can ask a Large Language Model (LLM) such as ChatGPT to produce a perfectly-formatted timer list that you can paste straight into the app.
+You can ask a Large Language Model (LLM) such as ChatGPT to produce a formatted timer list that you can paste straight into the app.
 
 Example prompt (edit the workout description to your liking):
 
 ```
-You are creating a plain-text list of timers for the Multi-Timer PWA.
+Please write a plain-text list of timers for a the multi-timer app.
 
 FORMAT (exactly):
 
 duration ; heading ; sub-heading ; color ; bells
 
-▪ duration — mm:ss (zero-padded) or seconds
-▪ heading / sub-heading — any text
-▪ color — any valid CSS colour name or code
+▪ duration — mm:ss (zero-padded)
+▪ heading - Text to be displayed in large font
+▪ sub-heading - Text to be displayed in smaller font
+▪ color — any valid CSS colour name
 ▪ bells — integer, number of beep sounds at the end (default 0)
 
+Example:
+
+00:03 ; Get Ready! ; ; white ; 1
+00:20 ; Sit-ups ; As many as possible! ; red; 2
+00:10 ; Rest ; Get ready for plank. ; green; 1
+00:20 ; Plank ; Engage your core! ; red; 2
+00:00 ; Done! ; ; white
+
 Task: Design a HIIT routine with
-• 3 rounds of 20 s Work / 10 s Rest
-• 60 s Rest between rounds
-Colours: red for Work, green for short Rest, white during long Rest
-Play 2 bells after each Work interval and 1 bell after each Rest.
+9 rounds of 20 s work / 10 s rest. 1 minute rest after each 3rd round.
+5 rounds of 45 s stretch, 15 s rest.
+
+Use different types of exercises as headings, alternating between core, arms and legs.
+Give tips specific to the exercise as subheading, or just general encouragement.
+Colors: red for work, green for short rest, blue for stretch, white during long rest
+Play 2 bells after each work/stretch interval and 1 bell after each rest.
 
 Return ONLY the timer lines, nothing else.
 ```
@@ -87,9 +99,9 @@ Then open <http://localhost:8000> in your browser.
 
 ⚠️  Because the service worker caches files aggressively, you might not see
 your changes right away. Perform a hard refresh (Shift-Reload) on desktop
-browsers, open the **About** page (ℹ️ icon) and click **Refresh cached files**,  
-or — on mobile devices — remove the app from the home-screen and add
-it again to pick up the latest version.
+browsers, or — on mobile devices — remove the app from the home-screen and add
+it again to pick up the latest version. It may also help to open the **About** 
+page (ℹ️ icon) and click **Refresh cached files**
 
 ## Contributing
 
