@@ -18,10 +18,8 @@ section) or deploy it to any static host (GitHub Pages, Netlify, Vercel, …).
 Need a quick set-up or some inspiration?  
 You can ask a Large Language Model (LLM) such as ChatGPT to produce a formatted timer list that you can paste straight into the app.
 
-Interactive sample prompt with one-click copy: [llm_prompt.html](llm_prompt.html).
-
-Open the link above, press “⧉ Copy prompt”, paste it into your favourite LLM,
-then copy the model’s reply into the textarea here, hit ▶️, and you’re ready to sweat!
+Copy [this example prompt](https://perrutquist.github.io/timer_app/llm_prompt.html), and modify it to your liking,
+paste it into your favorite LLM, then copy the model’s reply into the textarea in the app.
 
 ---
 
