@@ -1,7 +1,7 @@
-# Multi-Timer PWA ⏱️
+# Multi-Timer App ⏱️
 
-A tiny progressive-web app that lets you run a **sequence of timers** described
-with plain text. Perfect for interval training, presentations, cooking sessions,
+A tiny, free, open source progressive-web app that lets you run a **sequence of timers** 
+described with plain text. Perfect for interval training, presentations, cooking sessions,
 and more.  
 Everything runs client-side and also works **offline** thanks to a service
 worker.
