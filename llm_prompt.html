@@ -49,11 +49,13 @@ Play 2 bells after each work/stretch interval and 1 bell after each rest.
 Return ONLY the timer lines, nothing else.</pre>
 
   <script>
-    document.getElementById('copy-btn').addEventListener('click', async () => {
+    const copyBtn = document.getElementById('copy-btn');
+    copyBtn.addEventListener('click', async () => {
       const text = document.getElementById('prompt').textContent;
       try {
         await navigator.clipboard.writeText(text);
-        alert('Prompt copied to clipboard!');
+        copyBtn.textContent = '✅ Copied!';
+        copyBtn.disabled = true;
       } catch (err) {
         alert('Failed to copy: ' + err);
       }
