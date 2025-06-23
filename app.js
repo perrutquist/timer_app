@@ -1,19 +1,20 @@
 /* mode switching */
 const listBtn  = document.getElementById('list-btn');
 const timerBtn = document.getElementById('timer-btn');
+const aboutBtn = document.getElementById('about-btn');
 const listSec = document.getElementById('list-mode');
 const timerSec = document.getElementById('timer-mode');
+const aboutSec = document.getElementById('about-mode');
+const listBtn2 = document.getElementById('list-btn2');
 
 function setMode(mode) {
-  if (mode === 'list') {
-    listSec.classList.remove('hidden');
-    timerSec.classList.add('hidden');
-  } else {
-    timerSec.classList.remove('hidden');
-    listSec.classList.add('hidden');
-  }
+  listSec.classList.toggle('hidden', mode !== 'list');
+  timerSec.classList.toggle('hidden', mode !== 'timer');
+  aboutSec.classList.toggle('hidden', mode !== 'about');
 }
 listBtn.addEventListener('click', () => setMode('list'));
+aboutBtn?.addEventListener('click', () => setMode('about'));
+listBtn2?.addEventListener('click', () => setMode('list'));
 timerBtn.addEventListener('click', () => {
   // Switch to timer mode; reset only if the list content changed
   setMode('timer');
@@ -277,6 +278,26 @@ loadTimer(0);
 pause();
 
 /* service-worker registration for offline use */
+let swReg = null;
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
+  window.addEventListener('load', async () => {
+    try {
+      swReg = await navigator.serviceWorker.register('sw.js');
+    } catch (err) {
+      console.error('Service worker registration failed:', err);
+    }
+  });
 }
+
+function refreshCache() {
+  if (swReg) swReg.update();
+  if ('caches' in window) {
+    caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+  }
+  location.reload();
+}
+
+document.getElementById('sw-refresh-link')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  refreshCache();
+});

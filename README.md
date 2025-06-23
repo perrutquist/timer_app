@@ -55,7 +55,8 @@ Then open <http://localhost:8000> in your browser.
 
 ⚠️  Because the service worker caches files aggressively, you might not see
 your changes right away. Perform a hard refresh (Shift-Reload) on desktop
-browsers, or — on mobile devices — remove the app from the home-screen and add
+browsers, open the **About** page (ℹ️ icon) and click **Refresh cached files**,  
+or — on mobile devices — remove the app from the home-screen and add
 it again to pick up the latest version.
 
 ## Contributing
