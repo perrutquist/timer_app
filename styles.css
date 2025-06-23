@@ -16,7 +16,8 @@ textarea{width:100%;height:60vh;font-size:1rem;padding:.5rem;}
 .controls .disabled{opacity:.4;pointer-events:none;cursor:default;}
 /* vertically center list and timer content */
 #list-mode,
-#timer-mode{
+#timer-mode,
+#about-mode{
     display:flex;
     flex-direction:column;
     justify-content:center;
