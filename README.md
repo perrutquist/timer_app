@@ -13,6 +13,38 @@ worker.
 To run it locally, serve the folder with any static HTTP server (see Development
 section) or deploy it to any static host (GitHub Pages, Netlify, Vercel, …).
 
+## Generate timers with ChatGPT 🪄
+
+Need a quick set-up or some inspiration?  
+You can ask a Large Language Model (LLM) such as ChatGPT to produce a perfectly-formatted timer list that you can paste straight into the app.
+
+Example prompt (edit the workout description to your liking):
+
+```
+You are creating a plain-text list of timers for the Multi-Timer PWA.
+
+FORMAT (exactly):
+
+duration ; heading ; sub-heading ; color ; bells
+
+▪ duration — mm:ss (zero-padded) or seconds
+▪ heading / sub-heading — any text
+▪ color — any valid CSS colour name or code
+▪ bells — integer, number of beep sounds at the end (default 0)
+
+Task: Design a HIIT routine with
+• 3 rounds of 20 s Work / 10 s Rest
+• 60 s Rest between rounds
+Colours: red for Work, green for short Rest, white during long Rest
+Play 2 bells after each Work interval and 1 bell after each Rest.
+
+Return ONLY the timer lines, nothing else.
+```
+
+Copy the model’s reply into the textarea, hit ▶️, and you’re ready to sweat!
+
+---
+
 ## Features
 
 - List-driven multi-timer: define any number of timers in a textarea.
