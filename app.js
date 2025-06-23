@@ -61,8 +61,19 @@ let timerId = null;
 
 /* -------- sound -------- */
 let audioCtx = null;
+
+/* Acquire (or resume) AudioContext after a user-gesture to satisfy iOS PWA rules */
+function ensureAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}
+
 function playBeep(duration = 0.5, baseFreq = 440, volume = 0.3) {
-   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();                                                                
+   ensureAudioContext();
    const now = audioCtx.currentTime;
 
   const partials = [
@@ -237,7 +248,10 @@ async function pasteList() {
   }
 }
 
-startBtn.addEventListener('click', start);
+startBtn.addEventListener('click', () => {
+  ensureAudioContext(); // create / resume context on explicit user interaction
+  start();
+});
 pauseBtn.addEventListener('click', pause);
 resetBtn.addEventListener('click', reset);
 nextBtn.addEventListener('click', next);
