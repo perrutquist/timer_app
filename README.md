@@ -18,42 +18,10 @@ section) or deploy it to any static host (GitHub Pages, Netlify, Vercel, …).
 Need a quick set-up or some inspiration?  
 You can ask a Large Language Model (LLM) such as ChatGPT to produce a formatted timer list that you can paste straight into the app.
 
-Example prompt (edit the workout description to your liking):
+Interactive sample prompt with one-click copy: [llm_prompt.html](llm_prompt.html).
 
-```
-Please write a plain-text list of timers for a the multi-timer app.
-
-FORMAT (exactly):
-
-duration ; heading ; sub-heading ; color ; bells
-
-▪ duration — mm:ss (zero-padded)
-▪ heading - Text to be displayed in large font
-▪ sub-heading - Text to be displayed in smaller font
-▪ color — any valid CSS colour name
-▪ bells — integer, number of beep sounds at the end (default 0)
-
-Example:
-
-00:03 ; Get Ready! ; ; white ; 1
-00:20 ; Sit-ups ; As many as possible! ; red; 2
-00:10 ; Rest ; Get ready for plank. ; green; 1
-00:20 ; Plank ; Engage your core! ; red; 2
-00:00 ; Done! ; ; white
-
-Task: Design a HIIT routine with
-9 rounds of 20 s work / 10 s rest. 1 minute rest after each 3rd round.
-5 rounds of 45 s stretch, 15 s rest.
-
-Use different types of exercises as headings, alternating between core, arms and legs.
-Give tips specific to the exercise as subheading, or just general encouragement.
-Colors: red for work, green for short rest, blue for stretch, white during long rest
-Play 2 bells after each work/stretch interval and 1 bell after each rest.
-
-Return ONLY the timer lines, nothing else.
-```
-
-Copy the model’s reply into the textarea, hit ▶️, and you’re ready to sweat!
+Open the link above, press “⧉ Copy prompt”, paste it into your favourite LLM,
+then copy the model’s reply into the textarea here, hit ▶️, and you’re ready to sweat!
 
 ---
 
