@@ -16,6 +16,11 @@ listBtn.addEventListener('click', () => setMode('list'));
 aboutBtn?.addEventListener('click', () => setMode('about'));
 listBtn2?.addEventListener('click', () => setMode('list'));
 timerBtn.addEventListener('click', () => {
+  // Prevent switching if list invalid
+  if (!validateList()) {
+    setMode('list');
+    return;
+  }
   // Switch to timer mode; reset only if the list content changed
   setMode('timer');
 
@@ -65,6 +70,7 @@ function loadWorkout(name) {
   listInput.value = workouts[name] ?? '';
   lastListSnapshot = listInput.value;
   populateWorkoutSelect();
+  validateList();
 }
 
 /* initialize workouts */
@@ -94,6 +100,7 @@ listInput.addEventListener('input', () => {
   }
 
   saveWorkouts();
+  validateList();
 });
 
 /* switch workout */
@@ -128,6 +135,26 @@ function listModified() {
   return listInput.value !== lastListSnapshot;
 }
 
+function validateList() {
+  const lines = listInput.value.split('\n').map(l => l.trim());
+  let firstSeen = false;
+  for (const line of lines) {
+    if (!firstSeen && line.length) {
+      firstSeen = true;            // title line
+      continue;
+    }
+    if (line === '' || line.startsWith('#')) continue;
+
+    // must start with time (mm:ss or seconds) followed by semicolon
+    if (!/^(\d{1,2}:\d{2}|\d+)\s*;/.test(line)) {
+      listWarningEl?.classList.remove('hidden');
+      return false;
+    }
+  }
+  listWarningEl?.classList.add('hidden');
+  return true;
+}
+
 const display = document.getElementById('timer-display');
 const headingEl = document.getElementById('timer-heading');
 const workoutTitleEl = document.getElementById('workout-title');
@@ -143,6 +170,7 @@ const nextBtn  = document.getElementById('next-btn');
 const restartBtn = document.getElementById('restart-btn');
 const copyBtn  = document.getElementById('copy-btn');
 const pasteBtn = document.getElementById('paste-btn');
+const listWarningEl = document.getElementById('list-warning');
 
 let timers = [];
 let workoutTitle = '';
@@ -339,9 +367,22 @@ async function copyList() {
 async function pasteList() {
   try {
     const text = await navigator.clipboard.readText();
-    if (text) {
-      listInput.value = text;
+    if (!text) return;
+
+    // title = first non-empty line of pasted text
+    const titleLine = text.split('\n').map(l => l.trim()).find(l => l.length) || '';
+    let name = titleLine || `list ${Object.keys(workouts).length + 1}`;
+
+    // ensure unique name
+    if (workouts[name]) {
+      let i = 1;
+      while (workouts[`${name} (${i})`]) i++;
+      name = `${name} (${i})`;
     }
+
+    workouts[name] = text;
+    saveWorkouts();
+    loadWorkout(name);
   } catch (err) {
     alert('Failed to paste: ' + err);
   }
