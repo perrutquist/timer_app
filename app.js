@@ -34,8 +34,82 @@ timerBtn.addEventListener('click', () => {
 
 /* multi–timer logic */
 const listInput = document.getElementById('list-input');
+const workoutSelect = document.getElementById('workout-select');
+const newWorkoutBtn = document.getElementById('new-workout-btn');
+const deleteWorkoutBtn = document.getElementById('delete-workout-btn');
 
 let lastListSnapshot = listInput.value; // track text last time we parsed
+
+/* ---------- workout persistence ---------- */
+const STORAGE_KEY = 'workouts_v1';
+let workouts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+let activeWorkout = '';
+
+function saveWorkouts() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(workouts));
+}
+
+function populateWorkoutSelect() {
+  workoutSelect.innerHTML = '';
+  Object.keys(workouts).forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    workoutSelect.appendChild(opt);
+  });
+  workoutSelect.value = activeWorkout;
+}
+
+function loadWorkout(name) {
+  activeWorkout = name;
+  listInput.value = workouts[name] ?? '';
+  lastListSnapshot = listInput.value;
+  populateWorkoutSelect();
+}
+
+/* initialize workouts */
+if (Object.keys(workouts).length === 0) {
+  workouts['Default'] = listInput.value;
+}
+activeWorkout = Object.keys(workouts)[0];
+loadWorkout(activeWorkout);
+
+/* auto-save edits */
+listInput.addEventListener('input', () => {
+  workouts[activeWorkout] = listInput.value;
+  saveWorkouts();
+});
+
+/* switch workout */
+workoutSelect.addEventListener('change', (e) => {
+  workouts[activeWorkout] = listInput.value;
+  saveWorkouts();
+  loadWorkout(e.target.value);
+});
+
+/* create workout */
+newWorkoutBtn.addEventListener('click', () => {
+  const name = prompt('New workout name:')?.trim();
+  if (!name) return;
+  if (workouts[name]) { alert('Workout already exists'); return; }
+  workouts[name] = '';
+  saveWorkouts();
+  loadWorkout(name);
+});
+
+/* delete workout */
+deleteWorkoutBtn.addEventListener('click', () => {
+  if (Object.keys(workouts).length <= 1) {
+    alert('Cannot delete the last workout');
+    return;
+  }
+  if (confirm(`Delete workout "${activeWorkout}"?`)) {
+    delete workouts[activeWorkout];
+    saveWorkouts();
+    loadWorkout(Object.keys(workouts)[0]);
+  }
+});
+
 function listModified() {
   return listInput.value !== lastListSnapshot;
 }
