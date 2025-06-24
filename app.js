@@ -42,6 +42,7 @@ const listInput = document.getElementById('list-input');
 const workoutSelect = document.getElementById('workout-select');
 const newWorkoutBtn = document.getElementById('new-workout-btn');
 const deleteWorkoutBtn = document.getElementById('delete-workout-btn');
+const listWarningEl    = document.getElementById('list-warning');
 
 let lastListSnapshot = listInput.value; // track text last time we parsed
 
@@ -170,7 +171,6 @@ const nextBtn  = document.getElementById('next-btn');
 const restartBtn = document.getElementById('restart-btn');
 const copyBtn  = document.getElementById('copy-btn');
 const pasteBtn = document.getElementById('paste-btn');
-const listWarningEl = document.getElementById('list-warning');
 
 let timers = [];
 let workoutTitle = '';
