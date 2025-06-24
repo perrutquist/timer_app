@@ -26,6 +26,7 @@ paste it into your favorite LLM, then copy the model’s reply into the textarea
 ## Features
 
 - List-driven multi-timer: define any number of timers in a textarea.
+- Optional workout title (first non-empty line) displayed above the timer list.
 - Accepts `mm:ss` or pure seconds.
 - Optional *heading*, *sub-heading* and *background color* per timer.
 - One-click copy / paste of the timer list via the clipboard.
@@ -35,7 +36,9 @@ paste it into your favorite LLM, then copy the model’s reply into the textarea
 
 ## List syntax
 
-Each line describes one timer and is split by **semicolons**:
+The first non-empty line is treated as the **workout title** and is shown on top while the timers run.
+
+Each subsequent line describes one timer and is split by **semicolons**:
 
 ```
 duration ; heading ; sub-heading ; color ; bells
@@ -44,6 +47,7 @@ duration ; heading ; sub-heading ; color ; bells
 Only `duration` is required; the optional `bells` column sets how many bell sounds will play when the timer ends (default `0`):
 
 ```
+Morning Routine
 00:20 ; Work ; Round 1 ; red
 00:10 ; Rest ; Round 1 ; green
 30     ; Presentation intro
