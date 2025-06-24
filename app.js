@@ -146,8 +146,8 @@ function validateList() {
     }
     if (line === '' || line.startsWith('#')) continue;
 
-    // must start with time (mm:ss or seconds) followed by semicolon
-    if (!/^(\d{1,2}:\d{2}|\d+)\s*;/.test(line)) {
+    // line must start with a time (mm:ss or seconds); rest optional (may start with semicolon)
+    if (!/^(\d{1,2}:\d{2}|\d+)(\s*;|$)/.test(line)) {
       listWarningEl?.classList.remove('hidden');
       return false;
     }
