@@ -42,6 +42,7 @@ function listModified() {
 
 const display = document.getElementById('timer-display');
 const headingEl = document.getElementById('timer-heading');
+const workoutTitleEl = document.getElementById('workout-title');
 const subheadingEl = document.getElementById('timer-subheading');
 const nextInfoEl   = document.getElementById('timer-next');
 const remainingInfoEl = document.getElementById('timer-remaining');
@@ -56,6 +57,7 @@ const copyBtn  = document.getElementById('copy-btn');
 const pasteBtn = document.getElementById('paste-btn');
 
 let timers = [];
+let workoutTitle = '';
 let currentIndex = 0;
 let remaining = 0;
 let timerId = null;
@@ -116,8 +118,15 @@ function parseTimers() {
     .split('\n')
     .map(l => l.trim())
     .filter(l => l && !l.startsWith('#')); // ignore blank lines & comments
+
   lastListSnapshot = listInput.value; // remember current version
-  return lines.map(line => {
+
+  // First non-empty line is the workout title
+  workoutTitle = lines.length ? lines[0] : '';
+
+  const timerLines = lines.slice(1); // remaining lines are timers
+
+  return timerLines.map(line => {
     const [time, title = '', subtitle = '', color = '', bellStr = ''] = line.split(';').map(s => s.trim());
     let sec = 0;
     if (time.includes(':')) {
@@ -151,6 +160,7 @@ function render() {
 
 function showCurrentInfo() {
   const t = timers[currentIndex] || {};
+  workoutTitleEl.textContent = workoutTitle || '';
   headingEl.textContent = t.title || '';
   subheadingEl.textContent = t.subtitle || '';
   prevBtn.classList.toggle('disabled', currentIndex === 0);
