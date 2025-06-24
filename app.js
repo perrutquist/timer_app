@@ -69,14 +69,30 @@ function loadWorkout(name) {
 
 /* initialize workouts */
 if (Object.keys(workouts).length === 0) {
-  workouts['Default'] = listInput.value;
+  workouts['list 1'] = listInput.value;
 }
 activeWorkout = Object.keys(workouts)[0];
 loadWorkout(activeWorkout);
 
-/* auto-save edits */
+/* auto-save edits + dynamic title rename */
 listInput.addEventListener('input', () => {
+  // Save current content under current title
   workouts[activeWorkout] = listInput.value;
+
+  // Detect first non-empty line to use as workout title
+  const firstNonEmpty = listInput.value
+    .split('\n')
+    .map(l => l.trim())
+    .find(l => l.length);
+
+  // Rename workout when the first line changed to a new, unused title
+  if (firstNonEmpty && firstNonEmpty !== activeWorkout && !workouts[firstNonEmpty]) {
+    delete workouts[activeWorkout];
+    activeWorkout = firstNonEmpty;
+    workouts[activeWorkout] = listInput.value;
+    populateWorkoutSelect();
+  }
+
   saveWorkouts();
 });
 
@@ -89,9 +105,7 @@ workoutSelect.addEventListener('change', (e) => {
 
 /* create workout */
 newWorkoutBtn.addEventListener('click', () => {
-  const name = prompt('New workout name:')?.trim();
-  if (!name) return;
-  if (workouts[name]) { alert('Workout already exists'); return; }
+  const name = `list ${Object.keys(workouts).length + 1}`;
   workouts[name] = '';
   saveWorkouts();
   loadWorkout(name);
